@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServer_JWTAuth.Controllers
@@ -11,11 +12,13 @@ namespace IdentityServer_JWTAuth.Controllers
     public class SecurityController : ControllerBase
     {
         [HttpPost]
+        [AllowAnonymous]
         public void Login([FromBody] string value)
         {
 
         }
         [HttpPost]
+        [AllowAnonymous]
         public void Signup([FromBody] string value)
         {
 
