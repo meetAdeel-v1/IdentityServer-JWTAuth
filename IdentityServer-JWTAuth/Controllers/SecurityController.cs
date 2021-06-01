@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityServer_JWTAuth.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,13 @@ namespace IdentityServer_JWTAuth.Controllers
     {
         [HttpPost]
         [AllowAnonymous]
-        public void Login([FromBody] string value)
+        public async Task<ActionResult> Login([FromBody] User login)
         {
-
+            var user = await AuthenticateUser(login);
+            if (user != null) 
+                return Ok(new {token=GenerateJasonWebToken(user) });
+            else
+                return BadRequest(new {message="Invalid Username or Password" });
         }
         [HttpPost]
         [AllowAnonymous]
@@ -23,9 +28,14 @@ namespace IdentityServer_JWTAuth.Controllers
         {
 
         }
-        public async Task<string> GenerateJWT()
+        public async Task<string> GenerateJasonWebToken(User userInfo)
         {
             return "";
+        }
+        public async Task<User> AuthenticateUser(User login)
+        {
+            //if(login.username || login.email exists)
+            return login;
         }
     }
 }
