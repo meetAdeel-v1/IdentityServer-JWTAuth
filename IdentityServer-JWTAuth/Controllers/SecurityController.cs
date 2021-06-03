@@ -24,7 +24,7 @@ namespace IdentityServer_JWTAuth.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public void Signup([FromBody] string value)
+        public void Register([FromBody] UserSignup register)
         {
 
         }
