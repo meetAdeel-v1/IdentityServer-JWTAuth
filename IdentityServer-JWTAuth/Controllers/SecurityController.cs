@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using IdentityServer_JWTAuth.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IdentityServer_JWTAuth.Controllers
 {
@@ -12,6 +15,12 @@ namespace IdentityServer_JWTAuth.Controllers
     [ApiController]
     public class SecurityController : ControllerBase
     {
+        private readonly IConfiguration _config;
+        public SecurityController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult> Login([FromBody] User login)
@@ -30,6 +39,8 @@ namespace IdentityServer_JWTAuth.Controllers
         }
         public async Task<string> GenerateJasonWebToken(User userInfo)
         {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             return "";
         }
         public async Task<User> AuthenticateUser(User login)
