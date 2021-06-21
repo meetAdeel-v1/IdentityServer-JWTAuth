@@ -4,7 +4,8 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:57394",
-      "sslPort": 44372
+      "sslPort": 44372,
+      "launchUrl": "api/User/GetAll"
     }
   },
   "profiles": {
@@ -18,7 +19,8 @@
     "IdentityServer_JWTAuth": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000/Home/Index",
+      "launchUrl": "api/User/GetAll",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
