@@ -11,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using IdentityServer_JWTAuth.Context;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityServer_JWTAuth
 {
@@ -26,6 +29,11 @@ namespace IdentityServer_JWTAuth
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>().AddDefaultTokenProviders();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>
             {
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
@@ -67,7 +75,9 @@ namespace IdentityServer_JWTAuth
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+                //endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
