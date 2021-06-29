@@ -4,8 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityServer_JWTAuth.Context;
 using IdentityServer_JWTAuth.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -17,14 +19,18 @@ namespace IdentityServer_JWTAuth.Controllers
     public class SecurityController : ControllerBase
     {
         private readonly IConfiguration _config;
-        public SecurityController(IConfiguration config)
+        private readonly ApplicationContext _context;
+        private readonly UserManager<User> _userManager;
+        public SecurityController(IConfiguration config, ApplicationContext context, UserManager<User> userManager)
         {
             _config = config;
+            _context = context;
+            _userManager = userManager;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> Login([FromBody] User login)
+        public async Task<ActionResult> Login([FromBody] Employee login)
         {
             var user = await AuthenticateUser(login);
             if (user != null) 
@@ -34,20 +40,34 @@ namespace IdentityServer_JWTAuth.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public void Register([FromBody] UserSignup register)
+        public async Task<IActionResult> Register(AppUser register)
         {
-
+            if (ModelState.IsValid)
+            {
+                User user = new User() 
+                { 
+                    UserName=register.FirstName,
+                    Email=register.Email,
+                };
+                var result = await _userManager.CreateAsync(user,register.Password);
+                if (result.Succeeded)
+                    return Ok("User has been created Sucessfully!");
+                else
+                    return BadRequest("Error in creating User.");
+            }
+            return Ok("Model State is not valid.");
         }
-        public async Task<string> GenerateJasonWebToken(User userInfo)
+        public async Task<string> GenerateJasonWebToken(Employee userInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Issuer"], null, expires: DateTime.Now.AddMinutes(120), signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        public async Task<User> AuthenticateUser(User login)
+        public async Task<Employee> AuthenticateUser(Employee login)
         {
             //if(login.username || login.email exists)
+            var test = _context.Users.FirstOrDefault();
             return login;
         }
     }
