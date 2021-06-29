@@ -33,6 +33,13 @@ namespace IdentityServer_JWTAuth.Controllers
                 return BadRequest("No User Found.");
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public async Task<ActionResult> Login(Login login)
         {
             if (ModelState.IsValid)
