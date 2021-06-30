@@ -1,11 +1,12 @@
-﻿using System;
+﻿using IdentityServer_JWTAuth.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace IdentityServer_JWTAuth.Models
 {
-    public class Employee
+    public class Employee: DateTimeStamp
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
