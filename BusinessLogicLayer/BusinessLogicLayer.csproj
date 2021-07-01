@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+    <Compile Remove="temp\**" />
+    <EmbeddedResource Remove="temp\**" />
+    <None Remove="temp\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="temp\" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
 </Project>
