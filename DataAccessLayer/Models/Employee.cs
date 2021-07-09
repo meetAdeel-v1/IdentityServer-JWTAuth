@@ -1,10 +1,10 @@
-﻿using IdentityServer_JWTAuth.Common;
+﻿using DataAccessLayer.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServer_JWTAuth.Models
+namespace DataAccessLayer.Models
 {
     public class Employee: DateTimeStamp
     {
