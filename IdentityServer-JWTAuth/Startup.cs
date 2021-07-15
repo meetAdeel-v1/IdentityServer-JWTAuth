@@ -12,8 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
-using IdentityServer_JWTAuth.Context;
+//using IdentityServer_JWTAuth.Context;
 using Microsoft.AspNetCore.Identity;
+using DataAccessLayer.DataContext;
+using DataAccessLayer.Models;
 
 namespace IdentityServer_JWTAuth
 {
