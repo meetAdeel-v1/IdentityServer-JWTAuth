@@ -1,7 +1,6 @@
 ﻿using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +16,6 @@ namespace DataAccessLayer.DataContext
 
         }
         public DbSet<Employee> Employees { get; set; }
-        //public DbSet<User> Users { get; set; }
+        public DbSet<Department> Departments { get; set; }
     }
 }
