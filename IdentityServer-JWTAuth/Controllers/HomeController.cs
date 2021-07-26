@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityServer_JWTAuth.Context;
+using DataAccessLayer.DataContext;
+using DataAccessLayer.Models;
+using DataAccessLayer.ViewModels;
 using IdentityServer_JWTAuth.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UserSignup = IdentityServer_JWTAuth.Models.UserSignup;
 
 namespace IdentityServer_JWTAuth.Controllers
 {
@@ -40,6 +43,7 @@ namespace IdentityServer_JWTAuth.Controllers
         }
 
         [HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(Login login)
         {
             if (ModelState.IsValid)
@@ -56,23 +60,31 @@ namespace IdentityServer_JWTAuth.Controllers
                             return Ok("User exists and Logged In Successfully!");
                         }
                         else
-                            return BadRequest("User cannot login due to wrong user credentials.");
+                        {
+                            ModelState.AddModelError("Test","Incorrect Username or Password!");
+                            return View(login);
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
 
-                    throw;
+                    return BadRequest(ex.Message);
                 }
                 
             }
-            return Ok();
+            return View(login);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CreateUser()
+        {
+            return View();
+        }
 
-        // GET: HomeController/Create
-        //[HttpPost]
-        public async Task<IActionResult> Create(string UName, string pass)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUser(string UName, string pass)
         {
             if (ModelState.IsValid)
             {
@@ -97,83 +109,6 @@ namespace IdentityServer_JWTAuth.Controllers
                 }
             }
             return Ok("Model State is not valid.");
-        }
-
-        public async Task<IActionResult> CreateEmployee(Employee empObj)
-        {
-            Employee emp = new Employee() {FirstName="Adeel", LastName="Ahmed", Email="test@west.com", Address="US" };
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var result = _context.Add(emp);
-                    _context.SaveChanges();
-                    
-                }
-                catch (Exception ex)
-                {
-
-                    throw;
-                }
-            }
-            return Ok("Model State is not valid.");
-        }
-
-        // POST: HomeController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: HomeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: HomeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: HomeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: HomeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
     }
 }
