@@ -57,7 +57,7 @@ namespace IdentityServer_JWTAuth.Controllers
                         var result = await _signInManager.PasswordSignInAsync(user, login.Password, false, false);
                         if (result.Succeeded)
                         {
-                            return Ok("User exists and Logged In Successfully!");
+                            return RedirectToAction("Index","Employee");
                         }
                         else
                         {
@@ -88,8 +88,9 @@ namespace IdentityServer_JWTAuth.Controllers
         {
             if (ModelState.IsValid)
             {
-                //"Abc!23@"
-                User user = new User()
+                //mytest @west.com
+                 //"Abc!23@"
+                 User user = new User()
                 {
                     UserName = UName,
                     Email = "test@west.com",
