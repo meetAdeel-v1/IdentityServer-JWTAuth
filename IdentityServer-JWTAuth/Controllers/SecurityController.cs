@@ -4,8 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IdentityServer_JWTAuth.Context;
-using IdentityServer_JWTAuth.Models;
+using DataAccessLayer.DataContext;
+using DataAccessLayer.Models;
+using DataAccessLayer.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -40,17 +41,19 @@ namespace IdentityServer_JWTAuth.Controllers
         }
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(AppUser register)
+        public async Task<IActionResult> Register(UserSignup register)
         {
             if (ModelState.IsValid)
             {
-                User user = new User() 
-                { 
-                    UserName=register.FirstName,
-                    Email=register.Email,
+                User user = new User()
+                {
+                    UserName = register.FirstName,
+                    Email = register.Email,
+                    PhoneNumber=register.PhoneNumber,
                 };
-                var result = await _userManager.CreateAsync(user,register.Password);
+                var result = await _userManager.CreateAsync(user, register.Password);
                 if (result.Succeeded)
+                    //Add AppUser
                     return Ok("User has been created Sucessfully!");
                 else
                     return BadRequest("Error in creating User.");
