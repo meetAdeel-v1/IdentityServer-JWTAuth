@@ -1,4 +1,5 @@
-﻿using IdentityServer_JWTAuth.Models;
+﻿using DataAccessLayer.Models;
+using IdentityServer_JWTAuth.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,6 +12,7 @@ namespace IdentityServer_JWTAuth.Controllers
     public class EmployeeController : Controller
     {
         // GET: EmployeeController
+        [HttpGet]
         public ActionResult Index()
         {
             return View();
