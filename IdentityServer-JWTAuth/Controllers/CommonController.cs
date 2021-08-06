@@ -26,5 +26,25 @@ namespace IdentityServer_JWTAuth.Controllers
             }
             return Ok();
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> multipleFilesUpload(IEnumerable<IFormFile> files)
+        {
+            long totalFilesSize = files.Sum(f => f.Length);
+            var filePaths = new List<string>();
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var filePath = Path.GetTempFileName();
+                    filePaths.Add(filePath);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                }
+            }
+            return Ok(new { filesCount = files.Count(), totalSize = totalFilesSize, filePaths });
+        }
     }
 }
