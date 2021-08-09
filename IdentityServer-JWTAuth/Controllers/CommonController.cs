@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessLogicLayer.Services.FileService;
+using DataAccessLayer.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,11 @@ namespace IdentityServer_JWTAuth.Controllers
 {
     public class CommonController : Controller
     {
+        public readonly IFileService _fileService;
+        public CommonController(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
         public ActionResult Index()
         {
             return View();
@@ -20,10 +27,17 @@ namespace IdentityServer_JWTAuth.Controllers
         {
             long fileSize = file.Length;
             var filePath = Path.GetTempFileName();
-            using (var stream = new FileStream(filePath,FileMode.Create)) 
-            {
-                await file.CopyToAsync(stream);
-            }
+            byte[] bytes = System.IO.File.ReadAllBytes(filePath);
+            FileData fileObj = new FileData();
+            fileObj.Name = file.Name;
+            fileObj.FileName = file.FileName;
+            fileObj.ConentType = file.ContentType;
+            fileObj.FileGuid = bytes;
+            //using (var stream = new FileStream(filePath,FileMode.Create)) 
+            //{
+            //    await file.CopyToAsync(stream);
+            //}
+            var result = await _fileService.saveFile(fileObj);
             return Ok();
         }
         [HttpPost]
@@ -45,6 +59,14 @@ namespace IdentityServer_JWTAuth.Controllers
                 }
             }
             return Ok(new { filesCount = files.Count(), totalSize = totalFilesSize, filePaths });
+        }
+        [HttpGet]
+        public async Task<IActionResult> getFile()
+        {
+            var temp = Path.GetTempFileName();
+            var result = await _fileService.getFile();
+            System.IO.File.WriteAllBytes(temp,result.FileGuid);
+            return Ok(result);
         }
     }
 }
