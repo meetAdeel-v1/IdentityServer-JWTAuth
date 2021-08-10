@@ -1,5 +1,4 @@
-﻿using IdentityServer_JWTAuth.Context;
-using IdentityServer_JWTAuth.Models;
+﻿using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -43,23 +42,23 @@ namespace IdentityServer_JWTAuth.Controllers
         // POST api/<EmployeeController>
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateUser(AppUser newUserObj)
-        {
-            if (ModelState.IsValid)
-            {
-                User user = new User()
-                {
-                    UserName = newUserObj.FirstName,
-                    Email = newUserObj.Email,
-                };
-                var result = await _userManager.CreateAsync(user, newUserObj.Password);
-                if (result.Succeeded)
-                    return Ok("User has been created Sucessfully!");
-                else
-                    return BadRequest("Error in creating User.");
-            }
-            return Ok("Model State is not valid.");
-        }
+        //public async Task<IActionResult> CreateUser(AppUser newUserObj)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        User user = new User()
+        //        {
+        //            UserName = newUserObj.FirstName,
+        //            Email = newUserObj.Email,
+        //        };
+        //        var result = await _userManager.CreateAsync(user, newUserObj.Password);
+        //        if (result.Succeeded)
+        //            return Ok("User has been created Sucessfully!");
+        //        else
+        //            return BadRequest("Error in creating User.");
+        //    }
+        //    return Ok("Model State is not valid.");
+        //}
 
         // PUT api/<EmployeeController>/5
         [HttpPut("{id}")]
