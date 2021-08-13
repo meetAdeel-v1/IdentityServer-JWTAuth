@@ -9,9 +9,9 @@ namespace BusinessLogicLayer.Services.FileService
 {
     public interface IFileService
     {
-        Task<FileData> saveFile(FileData file);
-        Task<List<FileData>> saveFiles(List<FileData> files);
-        Task<FileData> getFile();
-        Task<FileData> getFiles();
+        Task<UserFileData> saveFile(UserFileData file);
+        Task<List<UserFileData>> saveFiles(List<UserFileData> files);
+        Task<UserFileData> getFile();
+        Task<List<UserFileData>> getFiles();
     }
 }
