@@ -21,18 +21,31 @@ namespace IdentityServer_JWTAuth.Controllers
         {
             return View();
         }
+        //public async Task<ActionResult> UploadDocument([FromForm] DataWrapper data)
+        //{
+        //    IFormFile file = data.File;
+
+        //    long length = file.Length;
+        //    if (length < 0)
+        //        return BadRequest();
+
+        //    using var fileStream = file.OpenReadStream();
+        //    byte[] bytes = new byte[length];
+        //    fileStream.Read(bytes, 0, (int)file.Length);
+
+        //}
         [HttpPost]
-        [ValidateAntiForgeryToken]
-       public async Task<IActionResult> fileUpload(IFormFile file)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> fileUpload(IFormFile file)
         {
             long fileSize = file.Length;
             var filePath = Path.GetTempFileName();
             byte[] bytes = System.IO.File.ReadAllBytes(filePath);
-            FileData fileObj = new FileData();
-            fileObj.Name = file.Name;
-            fileObj.FileName = file.FileName;
-            fileObj.ConentType = file.ContentType;
-            fileObj.FileGuid = bytes;
+            var fileObj = new UserFileData();
+            fileObj.filesInfo.Name = file.Name;
+            fileObj.filesInfo.FileName = file.FileName;
+            fileObj.filesInfo.ConentType = file.ContentType;
+            fileObj.filesInfo.FileGuid = bytes;
             //using (var stream = new FileStream(filePath,FileMode.Create)) 
             //{
             //    await file.CopyToAsync(stream);
@@ -65,7 +78,19 @@ namespace IdentityServer_JWTAuth.Controllers
         {
             var temp = Path.GetTempFileName();
             var result = await _fileService.getFile();
-            System.IO.File.WriteAllBytes(temp,result.FileGuid);
+            System.IO.File.WriteAllBytes(temp,result.filesInfo.FileGuid);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> getMultipleFiles()
+        {
+            var temp = Path.GetTempFileName();
+            var result = await _fileService.getFiles();
+            foreach(var file in result)
+            {
+                System.IO.File.WriteAllBytes(temp, file.filesInfo.FileGuid);
+            }
             return Ok(result);
         }
     }
