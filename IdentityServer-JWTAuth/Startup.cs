@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using DataAccessLayer.DataContext;
 using DataAccessLayer.Models;
+using BusinessLogicLayer.Services.FileService;
 
 namespace IdentityServer_JWTAuth
 {
@@ -51,6 +52,8 @@ namespace IdentityServer_JWTAuth
             });
             services.AddRazorPages();
             services.AddMvc();
+
+            services.AddTransient<IFileService, FileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
