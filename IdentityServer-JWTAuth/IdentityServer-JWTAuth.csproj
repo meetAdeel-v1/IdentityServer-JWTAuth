@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Employee\" />
+    <Folder Include="wwwroot\assets\Images\" />
   </ItemGroup>
 
 </Project>
