@@ -39,13 +39,19 @@ namespace IdentityServer_JWTAuth.Controllers
         public async Task<IActionResult> fileUpload(IFormFile file)
         {
             long fileSize = file.Length;
-            var filePath = Path.GetTempFileName();
-            byte[] bytes = System.IO.File.ReadAllBytes(filePath);
+            byte[] byteArr = null;
+            //var filePath = Path.GetTempFileName();
+            //byte[] bytes = System.IO.File.ReadAllBytes(filePath);
+            using (var stream=new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                byteArr = stream.ToArray();
+            }
             var fileObj = new UserFileData();
             fileObj.filesInfo.Name = file.Name;
             fileObj.filesInfo.FileName = file.FileName;
             fileObj.filesInfo.ConentType = file.ContentType;
-            fileObj.filesInfo.FileGuid = bytes;
+            fileObj.filesInfo.FileGuid = byteArr;
             //using (var stream = new FileStream(filePath,FileMode.Create)) 
             //{
             //    await file.CopyToAsync(stream);
