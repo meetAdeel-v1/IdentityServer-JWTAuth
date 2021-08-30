@@ -22,8 +22,8 @@ namespace DataAccessLayer.ViewModels
 
     public class FileManager
     {
-        public int UserId { get; set; }
         public int fileId { get; set; }
+        public string UserId { get; set; }
         public string fileType { get; set; }
 
     }
