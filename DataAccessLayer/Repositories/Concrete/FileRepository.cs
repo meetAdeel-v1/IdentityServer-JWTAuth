@@ -30,17 +30,17 @@ namespace DataAccessLayer.Repositories.Concrete
         public async Task<FileData> saveFile(UserFileData file)
         {
             var _file = new FileData();
-            _file.Name = file.filesInfo.Name;
-            _file.FileName = file.filesInfo.FileName;
-            _file.ConentType = file.filesInfo.ConentType;
-            _file.FileGuid = file.filesInfo.FileGuid;
+            _file.Name = file.Name;
+            _file.FileName = file.FileName;
+            _file.ConentType = file.ConentType;
+            _file.FileGuid = file.FileGuid;
             _dataContext.Add(_file);
             var result = await _dataContext.SaveChangesAsync();
             var _fileManager = new FileManagement();
             //_fileManager.FileId = file.fileManagerInfo.fileId;
             _fileManager.FileId = result;
-            _fileManager.UserId = file.fileManagerInfo.UserId;
-            _fileManager.FileTypeId = file.fileManagerInfo.fileType;
+            _fileManager.UserId = file.UserId;
+            _fileManager.FileTypeId = file.fileType;
             return _file;
         }
 
