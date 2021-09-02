@@ -7,25 +7,15 @@ using System.Threading.Tasks;
 namespace DataAccessLayer.ViewModels
 {
     public class UserFileData {
-        public FilesData filesInfo { get; set; }
-        public FileManager fileManagerInfo { get; set; }
-        
-    }
-    public class FilesData
-    {
-        public int Id { get; set; }
+        //file data
         public string Name { get; set; }
         public string FileName { get; set; }
         public string ConentType { get; set; }
         public byte[] FileGuid { get; set; }
-    }
-
-    public class FileManager
-    {
+        //fileManager Data
         public int fileId { get; set; }
         public string UserId { get; set; }
         public string fileType { get; set; }
 
     }
-
 }
