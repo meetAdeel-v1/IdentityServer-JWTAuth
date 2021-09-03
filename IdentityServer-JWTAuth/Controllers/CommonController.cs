@@ -40,18 +40,23 @@ namespace IdentityServer_JWTAuth.Controllers
         {
             long fileSize = file.Length;
             byte[] byteArr = null;
+            //option 1
             //var filePath = Path.GetTempFileName();
             //byte[] bytes = System.IO.File.ReadAllBytes(filePath);
+            //option 2
             using (var stream=new MemoryStream())
             {
                 await file.CopyToAsync(stream);
                 byteArr = stream.ToArray();
             }
             var fileObj = new UserFileData();
-            fileObj.filesInfo.Name = file.Name;
-            fileObj.filesInfo.FileName = file.FileName;
-            fileObj.filesInfo.ConentType = file.ContentType;
-            fileObj.filesInfo.FileGuid = byteArr;
+            fileObj.Name = file.Name;
+            fileObj.FileName = file.FileName;
+            fileObj.ConentType = file.ContentType;
+            fileObj.FileGuid = byteArr;
+            fileObj.UserId = "";
+            fileObj.fileType = "ProfileImage";
+            //option 3
             //using (var stream = new FileStream(filePath,FileMode.Create)) 
             //{
             //    await file.CopyToAsync(stream);
@@ -84,7 +89,7 @@ namespace IdentityServer_JWTAuth.Controllers
         {
             var temp = Path.GetTempFileName();
             var result = await _fileService.getFile();
-            System.IO.File.WriteAllBytes(temp,result.filesInfo.FileGuid);
+            System.IO.File.WriteAllBytes(temp,result.FileGuid);
             return Ok(result);
         }
 
@@ -95,7 +100,7 @@ namespace IdentityServer_JWTAuth.Controllers
             var result = await _fileService.getFiles();
             foreach(var file in result)
             {
-                System.IO.File.WriteAllBytes(temp, file.filesInfo.FileGuid);
+                System.IO.File.WriteAllBytes(temp, file.FileGuid);
             }
             return Ok(result);
         }
