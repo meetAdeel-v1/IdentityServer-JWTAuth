@@ -19,7 +19,8 @@
     "IdentityServer_JWTAuth": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000/Home/Index",
+      //"applicationUrl": "https://localhost:5001;http://localhost:5000/Home/Index",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000/Home/Login",
       "launchUrl": "api/User/GetAll",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
