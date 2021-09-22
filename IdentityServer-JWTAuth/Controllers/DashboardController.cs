@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessLogicLayer.Services.FileService;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,11 @@ namespace IdentityServer_JWTAuth.Controllers
 {
     public class DashboardController : Controller
     {
+        public readonly IFileService _fileService;
+        public DashboardController(IFileService fileService)
+        {
+            _fileService = fileService;
+        }
         // GET: DashboardController
         [HttpGet]
         public IActionResult Index()
