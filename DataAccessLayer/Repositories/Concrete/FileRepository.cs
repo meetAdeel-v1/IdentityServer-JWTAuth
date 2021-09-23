@@ -41,6 +41,7 @@ namespace DataAccessLayer.Repositories.Concrete
             _fileManager.FileId = result;
             _fileManager.UserId = file.UserId;
             _fileManager.FileTypeId = file.fileType;
+            //_dataContext.file
             return _file;
         }
 
