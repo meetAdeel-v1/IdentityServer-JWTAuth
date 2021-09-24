@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Repositories.Interface;
+﻿using DataAccessLayer.Models;
+using DataAccessLayer.Repositories.Interface;
 using DataAccessLayer.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ namespace BusinessLogicLayer.Services.FileService
         {
             _fileRepository = fileRepository;
         }
-        public Task<UserFileData> getFile()
+        public async Task<FileData> getFile(string userId)
         {
-            throw new NotImplementedException();
+            return await _fileRepository.getFile(userId);
         }
 
         public Task<List<UserFileData>> getFiles()
@@ -25,10 +26,10 @@ namespace BusinessLogicLayer.Services.FileService
             throw new NotImplementedException();
         }
 
-        public Task<UserFileData> saveFile(UserFileData file)
+        public Task<FileData> saveFile(UserFileData file)
         {
             var result = _fileRepository.saveFile(file);
-            return null;
+            return result;
         }
 
         public Task<List<UserFileData>> saveFiles(List<UserFileData> files)
