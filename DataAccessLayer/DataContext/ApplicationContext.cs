@@ -17,6 +17,8 @@ namespace DataAccessLayer.DataContext
         }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<FileData> Files { get; set; }
+        public DbSet<FileData> FileData { get; set; }
+        public DbSet<FileManagement> FileManagement { get; set; }
+        
     }
 }
