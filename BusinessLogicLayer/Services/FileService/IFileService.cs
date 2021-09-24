@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.ViewModels;
+﻿using DataAccessLayer.Models;
+using DataAccessLayer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace BusinessLogicLayer.Services.FileService
 {
     public interface IFileService
     {
-        Task<UserFileData> saveFile(UserFileData file);
+        Task<FileData> saveFile(UserFileData file);
         Task<List<UserFileData>> saveFiles(List<UserFileData> files);
-        Task<UserFileData> getFile();
+        Task<FileData> getFile(string userId);
         Task<List<UserFileData>> getFiles();
     }
 }
