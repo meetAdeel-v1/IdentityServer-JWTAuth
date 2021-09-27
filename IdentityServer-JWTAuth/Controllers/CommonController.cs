@@ -38,31 +38,39 @@ namespace IdentityServer_JWTAuth.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> fileUpload(IFormFile file)
         {
-            long fileSize = file.Length;
-            byte[] byteArr = null;
-            //option 1
-            //var filePath = Path.GetTempFileName();
-            //byte[] bytes = System.IO.File.ReadAllBytes(filePath);
-            //option 2
-            using (var stream=new MemoryStream())
+            try
             {
-                await file.CopyToAsync(stream);
-                byteArr = stream.ToArray();
+                long fileSize = file.Length;
+                byte[] byteArr = null;
+                //option 1
+                //var filePath = Path.GetTempFileName();
+                //byte[] bytes = System.IO.File.ReadAllBytes(filePath);
+                //option 2
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    byteArr = stream.ToArray();
+                }
+                var fileObj = new UserFileData();
+                fileObj.Name = file.Name;
+                fileObj.FileName = file.FileName;
+                fileObj.ConentType = file.ContentType;
+                fileObj.FileGuid = byteArr;
+                fileObj.UserId = "35cc693a-62d3-4f59-840c-d5f0e5147bf8";
+                fileObj.fileType = "ProfileImage";
+                //option 3
+                //using (var stream = new FileStream(filePath,FileMode.Create)) 
+                //{
+                //    await file.CopyToAsync(stream);
+                //}
+                var result = await _fileService.saveFile(fileObj);
+                return Ok();
             }
-            var fileObj = new UserFileData();
-            fileObj.Name = file.Name;
-            fileObj.FileName = file.FileName;
-            fileObj.ConentType = file.ContentType;
-            fileObj.FileGuid = byteArr;
-            fileObj.UserId = "";
-            fileObj.fileType = "ProfileImage";
-            //option 3
-            //using (var stream = new FileStream(filePath,FileMode.Create)) 
-            //{
-            //    await file.CopyToAsync(stream);
-            //}
-            var result = await _fileService.saveFile(fileObj);
-            return Ok();
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -88,7 +96,7 @@ namespace IdentityServer_JWTAuth.Controllers
         public async Task<IActionResult> getFile()
         {
             var temp = Path.GetTempFileName();
-            var result = await _fileService.getFile();
+            var result = await _fileService.getFile("");
             System.IO.File.WriteAllBytes(temp,result.FileGuid);
             return Ok(result);
         }
