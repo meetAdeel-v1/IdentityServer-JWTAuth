@@ -12,7 +12,7 @@ namespace DataAccessLayer.Repositories.Interface
     {
         Task<FileData> saveFile(UserFileData file);
         Task<List<FileData>> saveFiles(List<UserFileData> files);
-        Task<FileData> getFile(int fileId);
+        Task<FileData> getFile(string fileId);
         Task<IEnumerable<FileData>> getFiles();
     }
 }
