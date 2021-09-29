@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 using DataAccessLayer.DataContext;
 using DataAccessLayer.Models;
 using DataAccessLayer.ViewModels;
-using IdentityServer_JWTAuth.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UserSignup = IdentityServer_JWTAuth.Models.UserSignup;
 
 namespace IdentityServer_JWTAuth.Controllers
 {
@@ -57,13 +55,18 @@ namespace IdentityServer_JWTAuth.Controllers
                         var result = await _signInManager.PasswordSignInAsync(user, login.Password, false, false);
                         if (result.Succeeded)
                         {
-                            return RedirectToAction("Index","Employee");
+                            return RedirectToAction("Index","Dashboard");
                         }
                         else
                         {
                             ModelState.AddModelError("Test","Incorrect Username or Password!");
                             return View(login);
                         }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Test", "Incorrect Username or Password!");
+                        return View(login);
                     }
                 }
                 catch (Exception ex)
@@ -82,22 +85,51 @@ namespace IdentityServer_JWTAuth.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateUser(string UName, string pass)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //mytest@west.com
+        //         //"Abc!23@"
+        //         User user = new User()
+        //        {
+        //            UserName = UName,
+        //            Email = "test@west.com",
+        //        };
+        //        try
+        //        {
+        //            var result = await _userManager.CreateAsync(user, pass);
+        //            if (result.Succeeded)
+        //                return Ok("User has been created Sucessfully!");
+        //            else
+        //                return BadRequest("Error in creating User.");
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //            throw;
+        //        }
+        //    }
+        //    return Ok("Model State is not valid.");
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateUser(string UName, string pass)
+        public async Task<IActionResult> CreateUser(UserSignup signedUpUser)
         {
             if (ModelState.IsValid)
             {
-                //mytest @west.com
-                 //"Abc!23@"
-                 User user = new User()
+                User user = new User()
                 {
-                    UserName = UName,
-                    Email = "test@west.com",
+                    UserName = signedUpUser.Email,
+                    Email = signedUpUser.Email,
+                    PhoneNumber=signedUpUser.PhoneNumber
                 };
                 try
                 {
-                    var result = await _userManager.CreateAsync(user, pass);
+                    var result = await _userManager.CreateAsync(user, signedUpUser.Password);
                     if (result.Succeeded)
                         return Ok("User has been created Sucessfully!");
                     else
