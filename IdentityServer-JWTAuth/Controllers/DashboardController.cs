@@ -23,13 +23,15 @@ namespace IdentityServer_JWTAuth.Controllers
         }
         [HttpGet]
         //[Route("getImageFile")]
-        public IActionResult RenderImage(int userId)
+        public async Task<IActionResult> RenderImage(string userId)
         {
-            //get from db_context
+            userId = "35cc693a-62d3-4f59-840c-d5f0e5147bf8";
+            //get from _fileservice
+            var result =await _fileService.getFile(userId);
             //write read into byt[] stream
             //return File(stream,format,DisplayName);
             //var stream = new FileStream(@"pathToFile", FileMode.Open);
-            return File("stream", "image/png", "imageName.png");
+            return File(result.FileGuid, result.ContentType, result.FileName);
         }
 
     }
