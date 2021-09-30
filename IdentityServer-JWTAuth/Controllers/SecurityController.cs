@@ -47,7 +47,7 @@ namespace IdentityServer_JWTAuth.Controllers
             {
                 User user = new User()
                 {
-                    UserName = register.FirstName,
+                    //UserName = register.FirstName,
                     Email = register.Email,
                     PhoneNumber=register.PhoneNumber,
                 };
