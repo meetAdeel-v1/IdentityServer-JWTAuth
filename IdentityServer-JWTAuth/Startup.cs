@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using DataAccessLayer.DataContext;
 using DataAccessLayer.Models;
 using BusinessLogicLayer.Services.FileService;
+using DataAccessLayer.Repositories.Interface;
+using DataAccessLayer.Repositories.Concrete;
 
 namespace IdentityServer_JWTAuth
 {
@@ -54,6 +56,7 @@ namespace IdentityServer_JWTAuth
             services.AddMvc();
 
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IFileRepository, FileRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
