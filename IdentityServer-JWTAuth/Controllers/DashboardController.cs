@@ -28,9 +28,7 @@ namespace IdentityServer_JWTAuth.Controllers
             userId = "35cc693a-62d3-4f59-840c-d5f0e5147bf8";
             //get from _fileservice
             var result =await _fileService.getFile(userId);
-            //write read into byt[] stream
-            //return File(stream,format,DisplayName);
-            //var stream = new FileStream(@"pathToFile", FileMode.Open);
+            
             return File(result.FileGuid, result.ContentType, result.FileName);
         }
 
